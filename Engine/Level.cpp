@@ -15,16 +15,22 @@ Level::Level(Graphics & gfx)
 
 void Level::Draw()
 {
+	blocks[35].SetContent(Block::Contents::Empty);
 	for (Vec2 pos = { 0,0 }; pos.y < height; ++pos.y)
 	{
 		for (pos.x = 0; pos.x < width; ++pos.x)
 		{
 			int curBlockN = int(pos.y * width + pos.x);
-			//convert 2d grid to 2.5d isometric projection
-			Vec2 screenPos = { center.x - (pos.x + pos.y) * blocks[curBlockN].GetWidth() / 2,
-				center.y + (pos.x * 0.5f - pos.y * 0.5f) * blocks[curBlockN].GetHeight() / 2 };
-
-			blocks[curBlockN].Draw(gfx, blocksBit, { int(screenPos.x),int(screenPos.y) });
+			if (blocks[curBlockN].GetContent() != Block::Contents::Empty)
+			{
+				//convert 2d grid to 2.5d isometric projection
+				Vec2 screenPos = {
+					center.x + (pos.x - pos.y) * blocks[curBlockN].GetWidth() / 2,
+					center.y + (pos.x + pos.y) * blocks[curBlockN].GetWidth() / 4
+				};
+				blocks[curBlockN].Draw(gfx, blocksBit, { int(screenPos.x),int(screenPos.y) });
+			}
 		}
 	}
+	
 }

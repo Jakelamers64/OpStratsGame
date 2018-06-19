@@ -21,3 +21,13 @@ int Block::GetHeight() const
 {
 	return sourceLoc.bottom - sourceLoc.top;
 }
+
+Block::Contents Block::GetContent() const
+{
+	return content;
+}
+
+void Block::SetContent(Contents val)
+{
+	content = val;
+}

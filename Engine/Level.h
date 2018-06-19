@@ -18,5 +18,5 @@ private:
 	std::vector<Block> blocks;
 	Surface& blocksBit = Surface("terrainTiles.bmp");
 	Graphics& gfx;
-	Vec2 center = Vec2( gfx.ScreenWidth / 2.0f,gfx.ScreenHeight / 2.0f );
+	Vec2 center = Vec2( gfx.ScreenWidth / 2.0f ,gfx.ScreenHeight / 2.0f );
 };
