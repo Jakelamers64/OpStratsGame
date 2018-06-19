@@ -78,6 +78,12 @@
     <ClInclude Include="Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">
@@ -128,6 +134,12 @@
     <ClCompile Include="Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FramebufferPS.hlsl">
@@ -152,22 +164,13 @@
     <Image Include="Fixedsys16x28.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="dibr.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="dib32.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Map.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="marle32x48.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="samurai.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="link90x90.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="terrainTiles.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

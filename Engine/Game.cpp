@@ -25,7 +25,7 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	link({ 100,100 })
+	base(gfx)
 {
 }
 
@@ -39,28 +39,9 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	Vec2 dt = Vec2( 0.0f,0.0f );
-	if (wnd.kbd.KeyIsPressed(VK_LEFT))
-	{
-		dt.x -= 1;
-	}
-	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
-	{
-		dt.x += 1;
-	}
-	if (wnd.kbd.KeyIsPressed(VK_UP))
-	{
-		dt.y -= 1;
-	}
-	if (wnd.kbd.KeyIsPressed(VK_DOWN))
-	{
-		dt.y += 1;
-	}
-	link.SetDirection(dt);
-	link.Update(ft.Mark());
 }
 
 void Game::ComposeFrame()
 {
-	link.Draw(gfx);
+	base.Draw();
 }

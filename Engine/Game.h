@@ -27,6 +27,7 @@
 #include "Animation.h"
 #include "FrameTimer.h"
 #include "Character.h"
+#include "Level.h"
 
 class Game
 {
@@ -47,6 +48,6 @@ private:
 	/********************************/
 	/*  User Variables              */
 	FrameTimer ft;
-	Character link;
+	Level base;
 	/********************************/
 };
