@@ -9,6 +9,18 @@ class Block
 public:
 	Block(const RectI sourceLoc_in);
 
+	enum class Displayed
+	{
+		Nothing = 0,
+		OnePrime = 1,
+		TwoPrime = 2,
+		ThreePrime = 3,
+		OneTwoPrime = 4,
+		TwoThreePrime = 5,
+		ThreeOnePrime = 6,
+		All = 7
+	};
+
 	enum class Contents
 	{
 		Empty = 0,
@@ -25,4 +37,5 @@ private:
 	RectI sourceLoc;
 	Color chroma = { 255,0,255 };
 	Contents content = Contents::Grass;
+	Displayed display = Displayed::All;
 };
