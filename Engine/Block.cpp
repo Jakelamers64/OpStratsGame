@@ -8,8 +8,10 @@ Block::Block(const RectI sourceLoc_in)
 
 void Block::Draw(Graphics & gfx, Surface & surface, const Vei2& loc_in)
 {
+	//shift sprite so the middle is the seed loc for drawing instead of top left corner
+	Vei2 loc = { loc_in.x - GetWidth() / 2,loc_in.y - GetHeight() / 2 };
 
-	gfx.DrawSprite(loc_in.x,loc_in.y, sourceLoc, gfx.GetScreenRect(), surface, chroma);
+	gfx.DrawSprite(loc.x,loc.y, sourceLoc, gfx.GetScreenRect(), surface, chroma);
 }
 
 int Block::GetWidth() const
