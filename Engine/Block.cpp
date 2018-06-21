@@ -12,6 +12,8 @@ void Block::Draw(Graphics & gfx, Surface & surface, const Vei2& loc_in)
 	Vei2 loc = { loc_in.x - GetWidth() / 2,loc_in.y - GetHeight() / 2 };
 
 	gfx.DrawSprite(loc.x,loc.y, sourceLoc, gfx.GetScreenRect(), surface, chroma);
+
+	isDrawn = true;
 }
 
 int Block::GetWidth() const
@@ -29,7 +31,27 @@ Block::Contents Block::GetContent() const
 	return content;
 }
 
+Block::Displayed Block::GetDisplay() const
+{
+	return display;
+}
+
+bool Block::GetIsDrawn() const
+{
+	return isDrawn;
+}
+
 void Block::SetContent(Contents val)
 {
 	content = val;
+}
+
+void Block::SetDisplayed(Displayed val)
+{
+	display = val;
+}
+
+void Block::SetIsDrawn(const bool val)
+{
+	isDrawn = val;
 }

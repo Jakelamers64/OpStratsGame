@@ -31,8 +31,13 @@ public:
 	int GetWidth() const;
 	int GetHeight() const;
 	Contents GetContent() const;
+	Displayed GetDisplay() const;
+	bool GetIsDrawn() const;
 	void SetContent(Contents val);
+	void SetDisplayed(Displayed val);
+	void SetIsDrawn(const bool val);
 private:
+	bool isDrawn = false;
 	//were the sprite is in the bmp file
 	RectI sourceLoc;
 	Color chroma = { 255,0,255 };

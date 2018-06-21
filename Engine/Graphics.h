@@ -26,6 +26,7 @@
 #include "Colors.h"
 #include "Surface.h"
 #include "RectI.h"
+#include "Vei2.h"
 
 class Graphics
 {
@@ -84,4 +85,8 @@ public:
 	static constexpr int ScreenWidth = 800;
 	static constexpr int ScreenHeight = 600;
 	static RectI GetScreenRect();
+	static Vei2 GetCenter()
+	{
+		return Vei2(ScreenWidth / 2, ScreenHeight / 2);
+	}
 };

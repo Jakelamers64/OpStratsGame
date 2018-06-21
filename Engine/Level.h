@@ -11,12 +11,15 @@ class Level
 {
 public:
 	Level(Graphics& gfx);
-	void Draw();
+	void Draw(const Vei2 gridpos);
+	void DrawReset(const Vei2 gridpos);
+private:
+	Block& BlockAt(const Vei2 gridpos);
+	Vei2 GridToIso(const Vei2 gridpos);
 private:
 	static constexpr int width = 10;
-	static constexpr int height = 10;
+	static constexpr int height = 5;
 	std::vector<Block> blocks;
 	Surface& blocksBit = Surface("terrainTiles.bmp");
 	Graphics& gfx;
-	Vec2 center = Vec2( gfx.ScreenWidth / 2.0f ,gfx.ScreenHeight / 2.0f );
 };
