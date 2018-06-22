@@ -83,6 +83,7 @@ Block& Level::BlockAt(const Vei2 gridpos)
 	assert(gridpos.y >= 0);
 	assert(gridpos.x < width);
 	assert(gridpos.y < height);
+
 	return blocks[gridpos.y * width + gridpos.x];
 }
 

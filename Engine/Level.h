@@ -6,7 +6,6 @@
 #include "Vec2.h"
 #include "Vei2.h"
 
-
 class Level
 {
 public:
