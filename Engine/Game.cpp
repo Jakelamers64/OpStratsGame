@@ -43,6 +43,5 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	base.Draw({1,1});
-	base.DrawReset({ 1,1 });
+	base.Draw({4,1});
 }

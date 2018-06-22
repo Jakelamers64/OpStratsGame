@@ -12,10 +12,11 @@ class Level
 public:
 	Level(Graphics& gfx);
 	void Draw(const Vei2 gridpos);
-	void DrawReset(const Vei2 gridpos);
 private:
 	Block& BlockAt(const Vei2 gridpos);
 	Vei2 GridToIso(const Vei2 gridpos);
+	void DrawReset(const Vei2 gridpos);
+	void DrawRecur(const Vei2 gridpos);
 private:
 	static constexpr int width = 10;
 	static constexpr int height = 5;
