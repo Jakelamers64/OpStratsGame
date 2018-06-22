@@ -19,7 +19,7 @@ private:
 	void DrawRecur(const Vei2 gridpos);
 private:
 	static constexpr int width = 10;
-	static constexpr int height = 5;
+	static constexpr int height = 10;
 	std::vector<Block> blocks;
 	Surface& blocksBit = Surface("terrainTiles.bmp");
 	Graphics& gfx;

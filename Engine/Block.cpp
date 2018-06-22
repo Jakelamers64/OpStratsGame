@@ -1,8 +1,8 @@
 #include "Block.h"
 
-Block::Block(const RectI sourceLoc_in)
+Block::Block(const Contents contents_in)
 	:
-	sourceLoc(sourceLoc_in)
+	content(contents_in)
 {
 }
 
@@ -11,19 +11,30 @@ void Block::Draw(Graphics & gfx, Surface & surface, const Vei2& loc_in)
 	//shift sprite so the middle is the seed loc for drawing instead of top left corner
 	Vei2 loc = { loc_in.x - GetWidth() / 2,loc_in.y - GetHeight() / 2 };
 
-	gfx.DrawSprite(loc.x,loc.y, sourceLoc, gfx.GetScreenRect(), surface, chroma);
+	//see what should be drawn
+	if (Block::Contents::Empty != content)
+	{
+		if (Block::Contents::Stone == content)
+		{
+			gfx.DrawSprite(loc.x, loc.y, stone2, gfx.GetScreenRect(), surface, chroma);
+		}
+	}
+	else
+	{
+		gfx.DrawSprite(loc.x, loc.y, stone, gfx.GetScreenRect(), surface, chroma);
+	}
 
 	isDrawn = true;
 }
 
 int Block::GetWidth() const
 {
-	return sourceLoc.right - sourceLoc.left;
+	return stone.right - stone.left;
 }
 
 int Block::GetHeight() const
 {
-	return sourceLoc.bottom - sourceLoc.top;
+	return stone.bottom - stone.top;
 }
 
 Block::Contents Block::GetContent() const

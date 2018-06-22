@@ -10,9 +10,10 @@ Level::Level(Graphics & gfx)
 	{
 		for (int x = 0; x < width; ++x)
 		{
-			blocks.emplace_back(Block({ 0,64,704,768 }));
+			blocks.emplace_back(Block::Contents::Empty);
 		}
 	}
+	BlockAt({ 2,4 }).SetContent(Block::Contents::Stone);
 }
 
 void Level::Draw(const Vei2 gridpos_in)
@@ -34,6 +35,7 @@ void Level::DrawReset(const Vei2 gridpos_in)
 	const int yEnd = std::min(height - 1, gridpos_in.y + 1);
 
 	BlockAt({ gridpos_in.x,gridpos_in.y }).SetIsDrawn(false);
+
 	for (Vei2 gridpos = { xStart,yStart }; gridpos.y <= yEnd; ++gridpos.y)
 	{
 		for (gridpos.x = xStart; gridpos.x <= xEnd; ++gridpos.x)
