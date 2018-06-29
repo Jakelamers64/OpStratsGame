@@ -27,7 +27,8 @@
 #include "Animation.h"
 #include "FrameTimer.h"
 #include "Character.h"
-#include "Level.h"
+#include "World.h"
+#include "File.h"
 
 class Game
 {
@@ -48,6 +49,7 @@ private:
 	/********************************/
 	/*  User Variables              */
 	FrameTimer ft;
-	Level base;
+	World world;
+	File blockComp;
 	/********************************/
 };

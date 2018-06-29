@@ -25,7 +25,8 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	base(gfx)
+	world(gfx,2),
+	blockComp("blockComp.bmp")
 {
 }
 
@@ -43,5 +44,5 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	base.Draw({0,0});
+	world.Draw(gfx,blockComp);
 }

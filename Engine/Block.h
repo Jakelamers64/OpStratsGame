@@ -39,8 +39,7 @@ public:
 private:
 	bool isDrawn = false;
 	//were the sprite is in the bmp file
-	RectI stone = { 0,64,128,192 };
-	RectI stone2 = { 256,320,896,960 };
+	RectI OnePrime = { 0,64,0,64 };
 	Color chroma = { 255,0,255 };
 	Contents content;
 	Displayed display = Displayed::All;

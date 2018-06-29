@@ -5,21 +5,22 @@
 #include <vector>
 #include "Vec2.h"
 #include "Vei2.h"
+#include "File.h"
 
 class Level
 {
 public:
-	Level(Graphics& gfx);
-	void Draw(const Vei2 gridpos);
+	Level(Graphics& gfx,const int levelEvel_in);
+	void Draw(const Vei2 gridpos, const File toDraw);
 private:
 	Block& BlockAt(const Vei2 gridpos);
 	Vei2 GridToIso(const Vei2 gridpos);
 	void DrawReset(const Vei2 gridpos);
-	void DrawRecur(const Vei2 gridpos);
+	void DrawRecur(const Vei2 gridpos, const File toDraw);
 private:
 	static constexpr int width = 10;
 	static constexpr int height = 10;
+	int levelEvel;
 	std::vector<Block> blocks;
-	Surface& blocksBit = Surface("terrainTiles.bmp");
 	Graphics& gfx;
 };

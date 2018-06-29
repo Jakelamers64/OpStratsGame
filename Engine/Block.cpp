@@ -16,12 +16,12 @@ void Block::Draw(Graphics & gfx, Surface & surface, const Vei2& loc_in)
 	{
 		if (Block::Contents::Stone == content)
 		{
-			gfx.DrawSprite(loc.x, loc.y, stone2, gfx.GetScreenRect(), surface, chroma);
+			gfx.DrawSprite(loc.x, loc.y, OnePrime, gfx.GetScreenRect(), surface, chroma);
 		}
 	}
 	else
 	{
-		gfx.DrawSprite(loc.x, loc.y, stone, gfx.GetScreenRect(), surface, chroma);
+		gfx.DrawSprite(loc.x, loc.y, OnePrime, gfx.GetScreenRect(), surface, chroma);
 	}
 
 	isDrawn = true;
@@ -29,12 +29,12 @@ void Block::Draw(Graphics & gfx, Surface & surface, const Vei2& loc_in)
 
 int Block::GetWidth() const
 {
-	return stone.right - stone.left;
+	return OnePrime.right - OnePrime.left;
 }
 
 int Block::GetHeight() const
 {
-	return stone.bottom - stone.top;
+	return OnePrime.bottom - OnePrime.top;
 }
 
 Block::Contents Block::GetContent() const
