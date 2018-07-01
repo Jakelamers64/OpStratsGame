@@ -67,7 +67,8 @@ void Level::DrawRecur(const Vei2 gridpos_in, File toDraw,const int drawHeight)
 	const int yEnd = std::min(height - 1, gridpos_in.y + 1);
 
 	//draws sprite then sets isdrawn = to true so we can get out of the loop
-	if (BlockAt({ gridpos_in.x,gridpos_in.y }).GetContent() != Block::Contents::Empty)
+	if (BlockAt({ gridpos_in.x,gridpos_in.y }).GetContent() != Block::Contents::Empty && 
+		BlockAt({ gridpos_in.x,gridpos_in.y }).GetDisplay() != Block::Displayed::Nothing)
 	{
 		BlockAt({ gridpos_in.x,gridpos_in.y }).Draw(gfx, toDraw.GetFile(), GridToIso(gridpos_in),drawHeight);
 
