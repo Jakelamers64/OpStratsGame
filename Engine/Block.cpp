@@ -1,13 +1,14 @@
 #include "Block.h"
 #include <assert.h>
 
-Block::Block(const Contents contents_in)
+Block::Block(const Contents contents_in, const Displayed display_in)
 	:
-	content(contents_in)
+	content(contents_in),
+	display(display_in)
 {
 }
 
-void Block::Draw(Graphics & gfx, Surface & surface, const Vei2& loc_in)
+void Block::Draw(Graphics& gfx, Surface& surface, const Vei2& loc_in, const int drawHeight)
 {
 	//shift sprite so the middle is the seed loc for drawing instead of top left corner
 	Vei2 loc = { loc_in.x - GetWidth() / 2,loc_in.y - GetHeight() / 2 };
@@ -17,7 +18,7 @@ void Block::Draw(Graphics & gfx, Surface & surface, const Vei2& loc_in)
 	{
 		if (Block::Contents::Stone == content)
 		{
-			gfx.DrawSprite(loc.x, loc.y, GetPrimeRect(display, content), gfx.GetScreenRect(), surface, chroma);
+			gfx.DrawSprite(loc.x, loc.y - 32 * drawHeight, GetPrimeRect(display, content), gfx.GetScreenRect(), surface, chroma);
 		}
 	}
 	

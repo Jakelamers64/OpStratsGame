@@ -11,20 +11,26 @@ Level::Level(Graphics & gfx, const int levelEvel_in)
 	{
 		for (int x = 0; x < width; ++x)
 		{
-			blocks.emplace_back(Block::Contents::Stone);
+			if (levelEvel_in == 0)
+			{
+				blocks.emplace_back(Block::Contents::Stone,Block::Displayed::TwoThreePrime);
+			}
+			if (levelEvel_in == 1)
+			{
+				blocks.emplace_back(Block::Contents::Stone,Block::Displayed::all);
+			}
 		}
 	}
-	BlockAt({ 2,4 }).SetContent(Block::Contents::Empty);
 }
 
-void Level::Draw(const Vei2 gridpos_in, const File toDraw)
+void Level::Draw(const Vei2 gridpos_in, const File toDraw,const int drawHeight)
 {
 	assert(gridpos_in.x >= 0);
 	assert(gridpos_in.y >= 0);
 	assert(gridpos_in.x < width);
 	assert(gridpos_in.y < height);
 
-	DrawRecur(gridpos_in,toDraw);
+	DrawRecur(gridpos_in,toDraw,drawHeight);
 	DrawReset(gridpos_in);
 }
 
@@ -52,7 +58,7 @@ void Level::DrawReset(const Vei2 gridpos_in)
 	}
 }
 
-void Level::DrawRecur(const Vei2 gridpos_in, File toDraw)
+void Level::DrawRecur(const Vei2 gridpos_in, File toDraw,const int drawHeight)
 {
 	//calc the box that can be called around the pos
 	const int xStart = std::max(0, gridpos_in.x - 1);
@@ -63,7 +69,7 @@ void Level::DrawRecur(const Vei2 gridpos_in, File toDraw)
 	//draws sprite then sets isdrawn = to true so we can get out of the loop
 	if (BlockAt({ gridpos_in.x,gridpos_in.y }).GetContent() != Block::Contents::Empty)
 	{
-		BlockAt({ gridpos_in.x,gridpos_in.y }).Draw(gfx, toDraw.GetFile(), GridToIso(gridpos_in));
+		BlockAt({ gridpos_in.x,gridpos_in.y }).Draw(gfx, toDraw.GetFile(), GridToIso(gridpos_in),drawHeight);
 
 		for (Vei2 gridpos = { xStart,yStart }; gridpos.y <= yEnd; ++gridpos.y)
 		{
@@ -73,7 +79,7 @@ void Level::DrawRecur(const Vei2 gridpos_in, File toDraw)
 				{
 					if (BlockAt(gridpos).GetIsDrawn() == false)
 					{
-						DrawRecur(gridpos, toDraw);
+						DrawRecur(gridpos, toDraw,drawHeight);
 					}
 				}
 			}

@@ -16,7 +16,7 @@ public:
 		OneTwoPrime = 3,
 		TwoThreePrime = 4,
 		ThreeOnePrime = 5,
-		All = 6,
+		all = 6,
 		Nothing = 7,
 	};
 
@@ -26,8 +26,8 @@ public:
 		Empty = 1
 	};
 
-	Block(const Contents contents_in);
-	void Draw(Graphics& gfx,Surface& surface, const Vei2& loc);
+	Block(const Contents contents_in,const Displayed display_in);
+	void Draw(Graphics& gfx,Surface& surface, const Vei2& loc,const int drawHeight);
 	int GetWidth() const;
 	int GetHeight() const;
 	Contents GetContent() const;
@@ -41,5 +41,5 @@ private:
 	bool isDrawn = false;
 	Color chroma = { 255,0,255 };
 	Contents content;
-	Displayed display = Displayed::OnePrime;
+	Displayed display;
 };

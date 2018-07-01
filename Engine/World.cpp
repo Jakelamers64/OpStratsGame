@@ -12,5 +12,11 @@ World::World(Graphics& gfx,const int elevation_in)
 
 void World::Draw(Graphics & gfx, const File toDraw)
 {
-	Layers[curEvel].Draw({ 1,1 },toDraw);
+	Layers[curEvel].Draw({ 1,1 },toDraw,0);
+	Layers[curEvel + 1].Draw({ 1,1 }, toDraw,1);
+}
+
+Block & World::BlockAt(const Vei2 pos, int evel)
+{
+	return Layers[evel].BlockAt(pos);
 }
