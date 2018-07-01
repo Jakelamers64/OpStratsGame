@@ -13,6 +13,8 @@ public:
 	Level(Graphics& gfx,const int levelEvel_in);
 	void Draw(const Vei2 gridpos, const File toDraw,const int drawHeight);
 	Block& BlockAt(const Vei2 gridpos);
+	int GetWidth() const;
+	int GetHeight() const;
 private:
 	Vei2 GridToIso(const Vei2 gridpos);
 	void DrawReset(const Vei2 gridpos);

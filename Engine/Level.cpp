@@ -97,6 +97,16 @@ Block& Level::BlockAt(const Vei2 gridpos)
 	return blocks[gridpos.y * width + gridpos.x];
 }
 
+int Level::GetWidth() const
+{
+	return width;
+}
+
+int Level::GetHeight() const
+{
+	return height;
+}
+
 Vei2 Level::GridToIso(const Vei2 gridpos)
 {
 	assert(gridpos.x >= 0);

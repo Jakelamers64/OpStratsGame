@@ -14,7 +14,7 @@ void Block::Draw(Graphics& gfx, Surface& surface, const Vei2& loc_in, const int 
 	Vei2 loc = { loc_in.x - GetWidth() / 2,loc_in.y - GetHeight() / 2 };
 
 	//see what should be drawn
-	if (Block::Contents::Empty != content)
+	if (Block::Contents::Empty != content && Block::Displayed::Nothing != display)
 	{
 		if (Block::Contents::Stone == content)
 		{
@@ -50,6 +50,11 @@ bool Block::GetIsDrawn() const
 	return isDrawn;
 }
 
+bool Block::GetHasCalcNeighbors() const
+{
+	return hasCalcNeighbors;
+}
+
 void Block::SetContent(Contents val)
 {
 	content = val;
@@ -58,11 +63,18 @@ void Block::SetContent(Contents val)
 void Block::SetDisplayed(Displayed val)
 {
 	display = val;
+	hasCalcNeighbors = true;
+
 }
 
 void Block::SetIsDrawn(const bool val)
 {
 	isDrawn = val;
+}
+
+void Block::SetHasCalcNeighbors(const bool val)
+{
+	hasCalcNeighbors = val;
 }
 
 RectI Block::GetPrimeRect(const Displayed display,const Contents content) const
