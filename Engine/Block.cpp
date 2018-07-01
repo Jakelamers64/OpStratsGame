@@ -1,4 +1,5 @@
 #include "Block.h"
+#include <assert.h>
 
 Block::Block(const Contents contents_in)
 	:
@@ -16,25 +17,21 @@ void Block::Draw(Graphics & gfx, Surface & surface, const Vei2& loc_in)
 	{
 		if (Block::Contents::Stone == content)
 		{
-			gfx.DrawSprite(loc.x, loc.y, OnePrime, gfx.GetScreenRect(), surface, chroma);
+			gfx.DrawSprite(loc.x, loc.y, GetPrimeRect(display, content), gfx.GetScreenRect(), surface, chroma);
 		}
 	}
-	else
-	{
-		gfx.DrawSprite(loc.x, loc.y, OnePrime, gfx.GetScreenRect(), surface, chroma);
-	}
-
+	
 	isDrawn = true;
 }
 
 int Block::GetWidth() const
 {
-	return OnePrime.right - OnePrime.left;
+	return GetPrimeRect(display,content).right - GetPrimeRect(display, content).left;
 }
 
 int Block::GetHeight() const
 {
-	return OnePrime.bottom - OnePrime.top;
+	return GetPrimeRect(display, content).bottom - GetPrimeRect(display, content).top;
 }
 
 Block::Contents Block::GetContent() const
@@ -65,4 +62,14 @@ void Block::SetDisplayed(Displayed val)
 void Block::SetIsDrawn(const bool val)
 {
 	isDrawn = val;
+}
+
+RectI Block::GetPrimeRect(const Displayed display,const Contents content) const
+{
+	assert(int(display) >= 0);
+	assert(int(display) < 8);
+	assert(int(content) >= 0);
+	assert(int(content) < 1);
+	//returns rect of the sprite based on primes
+	return RectI( 64 * int(display),64 + 64 * int(display),64 * int(content),64 + 64 * int(content));
 }

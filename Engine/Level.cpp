@@ -11,10 +11,10 @@ Level::Level(Graphics & gfx, const int levelEvel_in)
 	{
 		for (int x = 0; x < width; ++x)
 		{
-			blocks.emplace_back(Block::Contents::Empty);
+			blocks.emplace_back(Block::Contents::Stone);
 		}
 	}
-	BlockAt({ 2,4 }).SetContent(Block::Contents::Stone);
+	BlockAt({ 2,4 }).SetContent(Block::Contents::Empty);
 }
 
 void Level::Draw(const Vei2 gridpos_in, const File toDraw)
@@ -61,17 +61,20 @@ void Level::DrawRecur(const Vei2 gridpos_in, File toDraw)
 	const int yEnd = std::min(height - 1, gridpos_in.y + 1);
 
 	//draws sprite then sets isdrawn = to true so we can get out of the loop
-	BlockAt({ gridpos_in.x,gridpos_in.y }).Draw(gfx, toDraw.GetFile(), GridToIso(gridpos_in));
-
-	for (Vei2 gridpos = { xStart,yStart }; gridpos.y <= yEnd; ++gridpos.y)
+	if (BlockAt({ gridpos_in.x,gridpos_in.y }).GetContent() != Block::Contents::Empty)
 	{
-		for (gridpos.x = xStart; gridpos.x <= xEnd; ++gridpos.x)
+		BlockAt({ gridpos_in.x,gridpos_in.y }).Draw(gfx, toDraw.GetFile(), GridToIso(gridpos_in));
+
+		for (Vei2 gridpos = { xStart,yStart }; gridpos.y <= yEnd; ++gridpos.y)
 		{
-			if (gridpos_in != gridpos)
+			for (gridpos.x = xStart; gridpos.x <= xEnd; ++gridpos.x)
 			{
-				if (BlockAt(gridpos).GetIsDrawn() == false)
+				if (gridpos_in != gridpos)
 				{
-					DrawRecur(gridpos,toDraw);
+					if (BlockAt(gridpos).GetIsDrawn() == false)
+					{
+						DrawRecur(gridpos, toDraw);
+					}
 				}
 			}
 		}

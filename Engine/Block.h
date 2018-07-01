@@ -7,23 +7,23 @@
 class Block
 {
 public:
+
 	enum class Displayed
 	{
-		Nothing = 0,
-		OnePrime = 1,
-		TwoPrime = 2,
-		ThreePrime = 3,
-		OneTwoPrime = 4,
-		TwoThreePrime = 5,
-		ThreeOnePrime = 6,
-		All = 7
+		OnePrime = 0,
+		TwoPrime = 1,
+		ThreePrime = 2,
+		OneTwoPrime = 3,
+		TwoThreePrime = 4,
+		ThreeOnePrime = 5,
+		All = 6,
+		Nothing = 7,
 	};
 
 	enum class Contents
 	{
-		Empty = 0,
-		Grass = 1,
-		Stone = 2
+		Stone = 0,
+		Empty = 1
 	};
 
 	Block(const Contents contents_in);
@@ -36,11 +36,10 @@ public:
 	void SetContent(Contents val);
 	void SetDisplayed(Displayed val);
 	void SetIsDrawn(const bool val);
+	RectI GetPrimeRect(const Displayed display, const Contents content) const;
 private:
 	bool isDrawn = false;
-	//were the sprite is in the bmp file
-	RectI OnePrime = { 0,64,0,64 };
 	Color chroma = { 255,0,255 };
 	Contents content;
-	Displayed display = Displayed::All;
+	Displayed display = Displayed::OnePrime;
 };
