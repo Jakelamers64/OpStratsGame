@@ -7,7 +7,7 @@ class World
 {
 public:
 	World(Graphics& gfx,const int elevation);
-	void Draw(Graphics& gfx,const File toDraw);
+	void Draw(const RectI& rectToDraw, Graphics & gfx, const File toDraw);
 	void CalcPrime(const Vei2 pos, const int evel);
 private:
 	Block& BlockAt(const Vei2 pos,const int evel);

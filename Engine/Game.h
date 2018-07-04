@@ -49,11 +49,16 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
+
 	FrameTimer ft;
 	World world;
 	File blockComp;
 	Dev dev;
 
+	//gives frametime so you can pass it to dev
 	float dt;
+	//the rect that should be put to screen
+	RectI view = { 0,9,0,9 };
+
 	/********************************/
 };

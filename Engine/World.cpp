@@ -13,10 +13,11 @@ World::World(Graphics& gfx,const int elevation_in)
 	CalcPrime({ 3,3 }, 1);
 }
 
-void World::Draw(Graphics & gfx, const File toDraw)
+void World::Draw(const RectI& rectToDraw, Graphics & gfx, const File toDraw)
 {
-	Layers[curEvel].Draw({ 0,9,0,9 },toDraw,0);
-	Layers[curEvel + 1].Draw({ 0,9,0,9 }, toDraw,1);
+	//calls draw on the level you are curently on and the one above it 
+	Layers[curEvel].Draw(rectToDraw,toDraw,0);
+	Layers[curEvel + 1].Draw(rectToDraw, toDraw,1);
 }
 
 void World::CalcPrime(const Vei2 pos, const int evel)
