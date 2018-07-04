@@ -29,6 +29,7 @@
 #include "Character.h"
 #include "World.h"
 #include "File.h"
+#include "Dev.h"
 
 class Game
 {
@@ -51,5 +52,8 @@ private:
 	FrameTimer ft;
 	World world;
 	File blockComp;
+	Dev dev;
+
+	float dt;
 	/********************************/
 };

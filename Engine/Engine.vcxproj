@@ -143,6 +143,7 @@
     <ClInclude Include="ChiliWin.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="COMInitializer.h" />
+    <ClInclude Include="Dev.h" />
     <ClInclude Include="DXErr.h" />
     <ClInclude Include="File.h" />
     <ClInclude Include="Font.h" />
@@ -167,6 +168,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="COMInitializer.cpp" />
+    <ClCompile Include="Dev.cpp" />
     <ClCompile Include="DXErr.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="Font.cpp" />

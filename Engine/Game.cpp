@@ -40,10 +40,11 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	const float dt = ft.Mark();
+	dt = ft.Mark();
 }
 
 void Game::ComposeFrame()
 {
 	world.Draw(gfx,blockComp);
+	dev.DrawStats({ 5,5 }, wnd.mouse.GetPos(), dt, gfx);
 }
