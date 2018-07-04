@@ -26,7 +26,6 @@
 #include "Colors.h"
 #include "Surface.h"
 #include "RectI.h"
-#include "Vei2.h"
 
 class Graphics
 {
@@ -60,12 +59,21 @@ public:
 		PutPixel( x,y,{ unsigned char( r ),unsigned char( g ),unsigned char( b ) } );
 	}
 	void PutPixel( int x,int y,Color c );
+	Color GetPixel(int x, int y) const;
 	void DrawSpriteNonChroma( int x, int y, const Surface& s );
 	void DrawSpriteNonChroma(int x, int y, const RectI& rec,const Surface& s);
 	void DrawSpriteNonChroma(int x, int y, RectI rec, const RectI& clip, const Surface& s);
 	void DrawSprite(int x, int y, const Surface& s);
 	void DrawSprite(int x, int y, const RectI& rec, const Surface& s);
 	void DrawSprite(int x, int y, RectI rec, const RectI& clip, const Surface& s,Color chroma = Colors::Magenta);
+	//version of draw sprite that allows you to substitute a color
+	void DrawSpriteSubstitute(int x, int y, Color substitute, const Surface& s);
+	void DrawSpriteSubstitute(int x, int y, Color substitute, const RectI& rec, const Surface& s);
+	void DrawSpriteSubstitute(int x, int y, Color substitute, RectI rec, const RectI& clip, const Surface& s, Color chroma = Colors::White);
+	//function that draws 50% transparency 
+	void DrawSpriteGhost(int x, int y, const Surface& s);
+	void DrawSpriteGhost(int x, int y, const RectI& rec, const Surface& s);
+	void DrawSpriteGhost(int x, int y, RectI rec, const RectI& clip, const Surface& s, Color chroma = Colors::Magenta);
 	~Graphics();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;
@@ -85,8 +93,5 @@ public:
 	static constexpr int ScreenWidth = 800;
 	static constexpr int ScreenHeight = 600;
 	static RectI GetScreenRect();
-	static Vei2 GetCenter()
-	{
-		return Vei2(ScreenWidth / 2, ScreenHeight / 2);
-	}
+	static Vei2 GetCenter();
 };
