@@ -23,66 +23,18 @@ Level::Level(Graphics & gfx, const int levelEvel_in)
 	}
 }
 
-void Level::Draw(const Vei2 gridpos_in, const File toDraw,const int drawHeight)
+void Level::Draw(const RectI& rectToDraw, File toDraw,const int drawHeight)
 {
-	assert(gridpos_in.x >= 0);
-	assert(gridpos_in.y >= 0);
-	assert(gridpos_in.x < width);
-	assert(gridpos_in.y < height);
+	assert(rectToDraw.left >= 0);
+	assert(rectToDraw.top >= 0);
+	assert(rectToDraw.right < width);
+	assert(rectToDraw.bottom < height);
 
-	DrawRecur(gridpos_in,toDraw,drawHeight);
-	DrawReset(gridpos_in);
-}
-
-void Level::DrawReset(const Vei2 gridpos_in)
-{
-	const int xStart = std::max(0, gridpos_in.x - 1);
-	const int yStart = std::max(0, gridpos_in.y - 1);
-	const int xEnd = std::min(width - 1, gridpos_in.x + 1);
-	const int yEnd = std::min(height - 1, gridpos_in.y + 1);
-
-	BlockAt({ gridpos_in.x,gridpos_in.y }).SetIsDrawn(false);
-
-	for (Vei2 gridpos = { xStart,yStart }; gridpos.y <= yEnd; ++gridpos.y)
+	for (Vei2 gridPos = { rectToDraw.left ,rectToDraw.top }; gridPos.y <= rectToDraw.bottom; ++gridPos.y)
 	{
-		for (gridpos.x = xStart; gridpos.x <= xEnd; ++gridpos.x)
+		for (gridPos.x = rectToDraw.left; gridPos.x <= rectToDraw.right; ++gridPos.x)
 		{
-			if (gridpos_in != gridpos)
-			{
-				if (BlockAt(gridpos).GetIsDrawn() == true)
-				{
-					DrawReset(gridpos);
-				}
-			}
-		}
-	}
-}
-
-void Level::DrawRecur(const Vei2 gridpos_in, File toDraw,const int drawHeight)
-{
-	//calc the box that can be called around the pos
-	const int xStart = std::max(0, gridpos_in.x - 1);
-	const int yStart = std::max(0, gridpos_in.y - 1);
-	const int xEnd = std::min(width - 1, gridpos_in.x + 1);
-	const int yEnd = std::min(height - 1, gridpos_in.y + 1);
-
-	//draws sprite then sets isdrawn = to true so we can get out of the loop
-	if (BlockAt({ gridpos_in.x,gridpos_in.y }).GetContent() != Block::Contents::Empty)
-	{
-		BlockAt({ gridpos_in.x,gridpos_in.y }).Draw(gfx, toDraw.GetFile(), GridToIso(gridpos_in),drawHeight);
-
-		for (Vei2 gridpos = { xStart,yStart }; gridpos.y <= yEnd; ++gridpos.y)
-		{
-			for (gridpos.x = xStart; gridpos.x <= xEnd; ++gridpos.x)
-			{
-				if (gridpos_in != gridpos)
-				{
-					if (BlockAt(gridpos).GetIsDrawn() == false)
-					{
-						DrawRecur(gridpos, toDraw,drawHeight);
-					}
-				}
-			}
+			BlockAt({ gridPos.x,gridPos.y }).Draw(gfx, toDraw.GetFile(), GridToIso(gridPos), drawHeight);
 		}
 	}
 }
