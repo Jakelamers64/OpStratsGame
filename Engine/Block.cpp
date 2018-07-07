@@ -11,7 +11,7 @@ Block::Block(const Contents contents_in, const Displayed display_in)
 void Block::Draw(Graphics& gfx, Surface& surface, const Vei2& loc_in, const int drawHeight)
 {
 	//shift sprite so the middle is the seed loc for drawing instead of top left corner
-	Vei2 loc = { loc_in.x - GetWidth() / 2,loc_in.y - GetHeight() / 2 };
+	Vei2 loc = { loc_in.x - GetWidth() / 2,loc_in.y - GetHeight() / 4 };
 
 	//see what should be drawn
 	if (Block::Contents::Empty != content && Block::Displayed::Nothing != display)
@@ -21,8 +21,6 @@ void Block::Draw(Graphics& gfx, Surface& surface, const Vei2& loc_in, const int 
 			gfx.DrawSprite(loc.x, loc.y - 32 * drawHeight, GetPrimeRect(display, content), gfx.GetScreenRect(), surface, chroma);
 		}
 	}
-	
-	isDrawn = true;
 }
 
 int Block::GetWidth() const
@@ -45,11 +43,6 @@ Block::Displayed Block::GetDisplay() const
 	return display;
 }
 
-bool Block::GetIsDrawn() const
-{
-	return isDrawn;
-}
-
 bool Block::GetHasCalcNeighbors() const
 {
 	return hasCalcNeighbors;
@@ -65,11 +58,6 @@ void Block::SetDisplayed(Displayed val)
 	display = val;
 	hasCalcNeighbors = true;
 
-}
-
-void Block::SetIsDrawn(const bool val)
-{
-	isDrawn = val;
 }
 
 void Block::SetHasCalcNeighbors(const bool val)

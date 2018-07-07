@@ -68,7 +68,7 @@ Vei2 Level::GridToIso(const Vei2 gridpos)
 
 	//calc iso shift from center
 	return Vei2(
-		gfx.GetCenter().x + (gridpos.x - gridpos.y) * BlockAt(gridpos).GetWidth() / 2,
-		gfx.GetCenter().y + (gridpos.x + gridpos.y) * BlockAt(gridpos).GetWidth() / 4
+		gfx.GetCenter().x + ((gridpos.x - gridpos.y) * BlockAt(gridpos).GetWidth() / 2),
+		gfx.GetCenter().y + ((gridpos.x + gridpos.y) * BlockAt(gridpos).GetWidth() / 4)
 	);
 }

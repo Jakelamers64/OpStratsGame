@@ -32,15 +32,12 @@ public:
 	int GetHeight() const;
 	Contents GetContent() const;
 	Displayed GetDisplay() const;
-	bool GetIsDrawn() const;
 	bool GetHasCalcNeighbors() const;
 	void SetContent(Contents val);
 	void SetDisplayed(Displayed val);
-	void SetIsDrawn(const bool val);
 	void SetHasCalcNeighbors(const bool val);
 	RectI GetPrimeRect(const Displayed display, const Contents content) const;
 private:
-	bool isDrawn = false;
 	bool hasCalcNeighbors = false;
 	Color chroma = { 255,0,255 };
 	Contents content;

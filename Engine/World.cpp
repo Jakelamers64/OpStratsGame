@@ -16,8 +16,8 @@ World::World(Graphics& gfx,const int elevation_in)
 void World::Draw(const RectI& rectToDraw, Graphics & gfx, const File toDraw)
 {
 	//calls draw on the level you are curently on and the one above it 
-	Layers[curEvel].Draw(rectToDraw,toDraw,0);
-	Layers[curEvel + 1].Draw(rectToDraw, toDraw,1);
+	//Layers[curEvel].Draw(rectToDraw,toDraw,0);
+	Layers[curEvel + 1].Draw(rectToDraw, toDraw,0);
 }
 
 void World::CalcPrime(const Vei2 pos, const int evel)
