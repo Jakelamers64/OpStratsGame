@@ -26,13 +26,14 @@ public:
 		Empty = 1
 	};
 
-	Block(const Contents contents_in,const Displayed display_in);
+	Block(const Contents contents_in,const Displayed display_in,Vei2 gridPos);
 	void Draw(Graphics& gfx,Surface& surface, const Vei2& loc,const int drawHeight);
 	int GetWidth() const;
 	int GetHeight() const;
 	Contents GetContent() const;
 	Displayed GetDisplay() const;
 	bool GetHasCalcNeighbors() const;
+	Vei2 GetPos() const;
 	void SetContent(Contents val);
 	void SetDisplayed(Displayed val);
 	void SetHasCalcNeighbors(const bool val);
@@ -42,4 +43,5 @@ private:
 	Color chroma = { 255,0,255 };
 	Contents content;
 	Displayed display;
+	Vei2 pos;
 };

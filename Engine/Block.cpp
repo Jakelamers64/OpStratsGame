@@ -1,10 +1,11 @@
 #include "Block.h"
 #include <assert.h>
 
-Block::Block(const Contents contents_in, const Displayed display_in)
+Block::Block(const Contents contents_in, const Displayed display_in, Vei2 gridPos)
 	:
 	content(contents_in),
-	display(display_in)
+	display(display_in),
+	pos(gridPos)
 {
 }
 
@@ -46,6 +47,11 @@ Block::Displayed Block::GetDisplay() const
 bool Block::GetHasCalcNeighbors() const
 {
 	return hasCalcNeighbors;
+}
+
+Vei2 Block::GetPos() const
+{
+	return pos;
 }
 
 void Block::SetContent(Contents val)

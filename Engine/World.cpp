@@ -16,8 +16,8 @@ World::World(Graphics& gfx,const int elevation_in)
 void World::Draw(const RectI& rectToDraw, Graphics & gfx, const File toDraw)
 {
 	//calls draw on the level you are curently on and the one above it 
-	//Layers[curEvel].Draw(rectToDraw,toDraw,0);
-	Layers[curEvel + 1].Draw(rectToDraw, toDraw,0);
+	Layers[curEvel].Draw(rectToDraw,toDraw,0);
+	Layers[curEvel + 1].Draw(rectToDraw, toDraw,1);
 }
 
 void World::CalcPrime(const Vei2 pos, const int evel)
@@ -33,9 +33,14 @@ void World::CalcPrime(const Vei2 pos, const int evel)
 	CalcPrimeReset(pos, evel);
 }
 
-Block & World::BlockAt(const Vei2 pos, int evel)
+Block& World::BlockAtScreenPos(const Vei2 screenPos)
 {
-	return Layers[evel].BlockAt(pos);
+	return Layers[curEvel].BlockAtScreenPos(screenPos);
+}
+
+Block& World::BlockAtGridPos(const Vei2 pos, int evel)
+{
+	return Layers[evel].BlockAtGridPos(pos);
 }
 
 void World::CheckNeighborsSetPrime(const Vei2 pos, const int evel)
@@ -47,134 +52,134 @@ void World::CheckNeighborsSetPrime(const Vei2 pos, const int evel)
 	assert(evel >= 0);
 	assert(evel < elevation);
 
-	if (Layers[evel].BlockAt(pos).GetContent() != Block::Contents::Empty)
+	if (Layers[evel].BlockAtGridPos(pos).GetContent() != Block::Contents::Empty)
 	{
 		if (evel + 1 < elevation)
 		{
 			//check the one above to the left to the right and then calc display for bottom stack
-			if (Layers[evel + 1].BlockAt(pos).GetContent() != Block::Contents::Empty)
+			if (Layers[evel + 1].BlockAtGridPos(pos).GetContent() != Block::Contents::Empty)
 			{
 				//take into account the edge blocks on the bottom and right
 				if (pos.x + 1 < Layers[evel].GetWidth() &&
 					pos.y + 1 < Layers[evel].GetHeight())
 				{
 					//check to see if nothing should be displayed
-					if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
-						Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
+					if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
 					{
-						Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::Nothing);
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::Nothing);
 					}
 					//if the block to the right is empty
-					else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
-						Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
+					else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
 					{
-						Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::TwoPrime);
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::TwoPrime);
 					}
 					//if the block down is empty
-					else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
-						Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
+					else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
 					{
-						Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::ThreePrime);
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::ThreePrime);
 					}
 					//if both the block to the right and down are empty
-					else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
-						Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
+					else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
 					{
-						Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::TwoThreePrime);
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::TwoThreePrime);
 					}
 				}
 				// if the both below and to the right of the block are out of bounds
 				else if (pos.x + 1 >= Layers[evel].GetWidth() &&
 					pos.y + 1 >= Layers[evel].GetHeight())
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::TwoThreePrime);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::TwoThreePrime);
 				}
 				//if the right is out of bounds and below is empty
 				else if (pos.x + 1 >= Layers[evel].GetWidth() &&
-					Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::TwoThreePrime);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::TwoThreePrime);
 				}
 				//if the right is out of bounds and below is not empty
 				else if (pos.x + 1 >= Layers[evel].GetWidth() &&
-					Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::TwoPrime);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::TwoPrime);
 				}
 				//if the right is empty and below out of bounds
-				else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
+				else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
 					pos.y + 1 >= Layers[evel].GetHeight())
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::TwoThreePrime);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::TwoThreePrime);
 				}
 				//if the right is not empty and below is out of bounds 
-				else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
+				else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
 					pos.y + 1 >= Layers[evel].GetHeight())
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::ThreePrime);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::ThreePrime);
 				}
 			}
 			//if the block above is empty
-			else if (Layers[evel + 1].BlockAt(pos).GetContent() == Block::Contents::Empty)
+			else if (Layers[evel + 1].BlockAtGridPos(pos).GetContent() == Block::Contents::Empty)
 			{
 				//take into account the edge blocks on the bottom and right
 				if (pos.x + 1 < Layers[evel].GetWidth() &&
 					pos.y + 1 < Layers[evel].GetHeight())
 				{
 					//if the blocks left and right are both not empty
-					if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
-						Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
+					if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
 					{
-						Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::OnePrime);
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::OnePrime);
 					}
 					//if the block to the right is empty
-					else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
-						Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
+					else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
 					{
-						Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::OneTwoPrime);
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::OneTwoPrime);
 					}
 					//if the block down is empty
-					else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
-						Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
+					else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
 					{
-						Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::ThreeOnePrime);
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::ThreeOnePrime);
 					}
 					//if both the block to the right and down are empty
-					else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
-						Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
+					else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
 					{
-						Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
+						Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
 					}
 				}
 				// if the both below and to the right of the block are out of bounds
 				else if (pos.x + 1 >= Layers[evel].GetWidth() &&
 					pos.y + 1 >= Layers[evel].GetHeight())
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
 				}
 				//if the right is out of bounds and below is empty
 				else if (pos.x + 1 >= Layers[evel].GetWidth() &&
-					Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
 				}
 				//if the right is out of bounds and below is not empty
 				else if (pos.x + 1 >= Layers[evel].GetWidth() &&
-					Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::OneTwoPrime);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::OneTwoPrime);
 				}
 				//if the right is empty and below out of bounds
-				else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
+				else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
 					pos.y + 1 >= Layers[evel].GetHeight())
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
 				}
 				//if the right is not empty and below is out of bounds 
-				else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
+				else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
 					pos.y + 1 >= Layers[evel].GetHeight())
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::ThreeOnePrime);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::ThreeOnePrime);
 				}
 			}
 		}
@@ -185,65 +190,65 @@ void World::CheckNeighborsSetPrime(const Vei2 pos, const int evel)
 				pos.y + 1 < Layers[evel].GetHeight())
 			{
 				//if the blocks left and right are both not empty
-				if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
-					Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
+				if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::OnePrime);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::OnePrime);
 				}
 				//if the block to the right is empty
-				else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
-					Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
+				else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::OneTwoPrime);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::OneTwoPrime);
 				}
 				//if the block down is empty
-				else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
-					Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
+				else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::ThreeOnePrime);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::ThreeOnePrime);
 				}
 				//if both the block to the right and down are empty
-				else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
-					Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
+				else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
 				{
-					Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
+					Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
 				}
 			}
 			// if the both below and to the right of the block are out of bounds
 			else if (pos.x + 1 >= Layers[evel].GetWidth() &&
 				pos.y + 1 >= Layers[evel].GetHeight())
 			{
-				Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
+				Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
 			}
 			//if the right is out of bounds and below is empty
 			else if (pos.x + 1 >= Layers[evel].GetWidth() &&
-				Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
+				Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() == Block::Contents::Empty)
 			{
-				Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
+				Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
 			}
 			//if the right is out of bounds and below is not empty
 			else if (pos.x + 1 >= Layers[evel].GetWidth() &&
-				Layers[evel].BlockAt({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
+				Layers[evel].BlockAtGridPos({ pos.x,pos.y + 1 }).GetContent() != Block::Contents::Empty)
 			{
-				Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::OneTwoPrime);
+				Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::OneTwoPrime);
 			}
 			//if the right is empty and below out of bounds
-			else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
+			else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() == Block::Contents::Empty &&
 				pos.y + 1 >= Layers[evel].GetHeight())
 			{
-				Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
+				Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::all);
 			}
 			//if the right is not empty and below is out of bounds 
-			else if (Layers[evel].BlockAt({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
+			else if (Layers[evel].BlockAtGridPos({ pos.x + 1,pos.y }).GetContent() != Block::Contents::Empty &&
 				pos.y + 1 >= Layers[evel].GetHeight())
 			{
-				Layers[evel].BlockAt({ pos.x,pos.y }).SetDisplayed(Block::Displayed::ThreeOnePrime);
+				Layers[evel].BlockAtGridPos({ pos.x,pos.y }).SetDisplayed(Block::Displayed::ThreeOnePrime);
 			}
 		}
 	}
 	else
 	{
-		Layers[evel].BlockAt(pos).SetDisplayed(Block::Displayed::Nothing);
+		Layers[evel].BlockAtGridPos(pos).SetDisplayed(Block::Displayed::Nothing);
 	}
 }
 
@@ -256,7 +261,7 @@ void World::CalcPrimeRecur(const Vei2 gridpos_in, const int evel)
 	const int yEnd = std::min(Layers[evel].GetHeight() - 1, gridpos_in.y + 1);
 	const int zEnd = std::min(elevation - 1, evel + 1);
 
-	if (BlockAt({ gridpos_in.x,gridpos_in.y }, evel).GetHasCalcNeighbors() == false)
+	if (BlockAtGridPos({ gridpos_in.x,gridpos_in.y }, evel).GetHasCalcNeighbors() == false)
 	{
 		CheckNeighborsSetPrime(gridpos_in,evel);
 
@@ -285,9 +290,9 @@ void World::CalcPrimeReset(const Vei2 gridpos_in, const int evel)
 	const int yEnd = std::min(Layers[evel].GetHeight() - 1, gridpos_in.y + 1);
 	const int zEnd = std::min(elevation - 1, evel + 1);
 
-	if (BlockAt({ gridpos_in.x,gridpos_in.y }, evel).GetHasCalcNeighbors() == true)
+	if (BlockAtGridPos({ gridpos_in.x,gridpos_in.y }, evel).GetHasCalcNeighbors() == true)
 	{
-		BlockAt({ gridpos_in.x,gridpos_in.y }, evel).SetHasCalcNeighbors(false);
+		BlockAtGridPos({ gridpos_in.x,gridpos_in.y }, evel).SetHasCalcNeighbors(false);
 
 		for (int z = zStart; z <= zEnd; ++z)
 		{

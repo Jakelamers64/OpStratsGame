@@ -7,7 +7,7 @@
 class Dev
 {
 public:
-	void DrawStats(const Vei2 pos, const Vei2 mousePos, const float dt, Graphics& gfx);
+	void DrawStats(const Vei2 pos, const Vei2 mousePos, const float dt, Graphics& gfx, World& world);
 private:
 	Font font = "Fixedsys16x28.bmp";
 	Player player;

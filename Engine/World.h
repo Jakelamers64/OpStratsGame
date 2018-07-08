@@ -9,8 +9,9 @@ public:
 	World(Graphics& gfx,const int elevation);
 	void Draw(const RectI& rectToDraw, Graphics & gfx, const File toDraw);
 	void CalcPrime(const Vei2 pos, const int evel);
+	Block& BlockAtGridPos(const Vei2 pos, const int evel);
+	Block& BlockAtScreenPos(const Vei2 screenPos);
 private:
-	Block& BlockAt(const Vei2 pos,const int evel);
 	void CheckNeighborsSetPrime(const Vei2 pos, const int evel);
 	void CalcPrimeRecur(const Vei2 pos,const int evel);
 	void CalcPrimeReset(const Vei2 pos, const int evel);
