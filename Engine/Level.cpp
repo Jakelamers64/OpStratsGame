@@ -49,9 +49,17 @@ Block& Level::BlockAtGridPos(const Vei2 gridpos)
 	return blocks[gridpos.y * width + gridpos.x];
 }
 
-Block& Level::BlockAtScreenPos(const Vei2 screenPos)
+Vei2 Level::BlockAtScreenPos(const Vei2 screenPos, const Vei2 origin)
 {
-	return BlockAtGridPos(IsoToGrid(screenPos));
+	return IsoToGrid(screenPos,origin);
+}
+
+bool Level::IsInBounds(const Vei2 gridPos) const
+{
+	return gridPos.x >= 0 &&
+		gridPos.y >= 0 &&
+		gridPos.x < width &&
+		gridPos.y < height;
 }
 
 int Level::GetWidth() const
@@ -64,7 +72,7 @@ int Level::GetHeight() const
 	return height;
 }
 
-Vei2 Level::GridToIso(const Vei2 gridpos)
+Vei2 Level::GridToIso(const Vei2 gridpos, const Vei2 origin)
 {
 	assert(gridpos.x >= 0);
 	assert(gridpos.y >= 0);
@@ -78,8 +86,19 @@ Vei2 Level::GridToIso(const Vei2 gridpos)
 	);
 }
 
-Vei2 Level::IsoToGrid(const Vei2 screenPos)
+Vei2 Level::IsoToGrid(const Vei2 screenPos, const Vei2 origin)
 {
+	//adjust for origin
+	Vei2 originShift = Vei2(
+		//x start
+		((origin.x / (BlockAtGridPos({ 0,0 }).GetWidth() / 2)) +
+		(origin.y / (BlockAtGridPos({ 0,0 }).GetHeight() / 4))) / 2,
+		//x end
+		//y start
+		((origin.y / (BlockAtGridPos({ 0,0 }).GetHeight() / 4)) -
+		(origin.x / (BlockAtGridPos({ 0,0 }).GetWidth() / 2))) / 2
+		//y end
+	);
 	//url for where I got the base for this code
 	//http://clintbellanger.net/articles/isometric_math/
 	return Vei2(
@@ -87,13 +106,13 @@ Vei2 Level::IsoToGrid(const Vei2 screenPos)
 		(
 		(screenPos.x / (BlockAtGridPos({0,0}).GetWidth() / 2)) + 
 			(screenPos.y / (BlockAtGridPos({ 0,0 }).GetHeight() / 4))
-			) / 2 - 15,
+			) / 2 - originShift.x,
 		//x end
 		//y start
 		(
 		((screenPos.y + 8) / (BlockAtGridPos({ 0,0 }).GetHeight() / 4)) - 
 			(screenPos.x / (BlockAtGridPos({ 0,0 }).GetWidth() / 2))
-			) / 2 - 3
+			) / 2 - originShift.y
 		//y end
 	);
 }

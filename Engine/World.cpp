@@ -10,6 +10,7 @@ World::World(Graphics& gfx,const int elevation_in)
 	{
 		Layers.emplace_back(Level(gfx,z));
 	}
+
 	CalcPrime({ 3,3 }, 1);
 }
 
@@ -33,9 +34,25 @@ void World::CalcPrime(const Vei2 pos, const int evel)
 	CalcPrimeReset(pos, evel);
 }
 
-Block& World::BlockAtScreenPos(const Vei2 screenPos)
+Vei2 World::BlockAtScreenPos(const Vei2 screenPos)
 {
-	return Layers[curEvel].BlockAtScreenPos(screenPos);
+	//orgin for curlvl + 1
+	Vei2 originPlus1 = { origin.x,origin.y - 32 };
+
+	Vei2 gridPos = Layers[curEvel + 1].BlockAtScreenPos(screenPos, originPlus1);
+
+	if (Layers[curEvel + 1].IsInBounds(gridPos))
+	{
+		if (Layers[curEvel + 1].BlockAtGridPos(gridPos).GetContent() == Block::Contents::Empty)
+		{
+			return Layers[curEvel].BlockAtScreenPos(screenPos, origin);
+		}
+		return gridPos;
+	}
+	else
+	{
+		return { -69,-69 };
+	}
 }
 
 Block& World::BlockAtGridPos(const Vei2 pos, int evel)

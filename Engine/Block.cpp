@@ -76,7 +76,7 @@ RectI Block::GetPrimeRect(const Displayed display,const Contents content) const
 	assert(int(display) >= 0);
 	assert(int(display) < 8);
 	assert(int(content) >= 0);
-	assert(int(content) < 1);
+	assert(int(content) <= 1);
 	//returns rect of the sprite based on primes
 	return RectI( 64 * int(display),64 + 64 * int(display),64 * int(content),64 + 64 * int(content));
 }

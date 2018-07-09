@@ -10,7 +10,7 @@ public:
 	void Draw(const RectI& rectToDraw, Graphics & gfx, const File toDraw);
 	void CalcPrime(const Vei2 pos, const int evel);
 	Block& BlockAtGridPos(const Vei2 pos, const int evel);
-	Block& BlockAtScreenPos(const Vei2 screenPos);
+	Vei2 BlockAtScreenPos(const Vei2 screenPos);
 private:
 	void CheckNeighborsSetPrime(const Vei2 pos, const int evel);
 	void CalcPrimeRecur(const Vei2 pos,const int evel);
@@ -21,4 +21,6 @@ private:
 	int curEvel = 0;
 	//ogres are like my game they have layers
 	std::vector<Level> Layers;
+	//origin right now
+	Vei2 origin = { 400,300 };
 };
