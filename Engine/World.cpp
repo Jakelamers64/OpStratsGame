@@ -10,8 +10,7 @@ World::World(Graphics& gfx,const int elevation_in)
 	{
 		Layers.emplace_back(Level(gfx,z));
 	}
-
-	CalcPrime({ 3,3 }, 1);
+	CalcPrime();
 }
 
 void World::Draw(const RectI& rectToDraw, Graphics & gfx, const File toDraw)
@@ -21,17 +20,18 @@ void World::Draw(const RectI& rectToDraw, Graphics & gfx, const File toDraw)
 	Layers[curEvel + 1].Draw(rectToDraw, toDraw,1);
 }
 
-void World::CalcPrime(const Vei2 pos, const int evel)
+void World::CalcPrime()
 {
-	assert(pos.x >= 0);
-	assert(pos.x < Layers[evel].GetWidth());
-	assert(pos.y >= 0);
-	assert(pos.y < Layers[evel].GetHeight());
-	assert(evel >= 0);
-	assert(evel < elevation);
-
-	CalcPrimeRecur(pos, evel);
-	CalcPrimeReset(pos, evel);
+	for (int z = 0; z < elevation; ++z)
+	{
+		for (int y = 0; y < Layers[z].GetHeight(); ++y)
+		{
+			for (int x = 0; x < Layers[z].GetWidth(); ++x)
+			{
+				CheckNeighborsSetPrime({ x,y }, z);
+			}
+		}
+	}
 }
 
 Vei2 World::BlockAtScreenPos(const Vei2 screenPos)
@@ -266,63 +266,5 @@ void World::CheckNeighborsSetPrime(const Vei2 pos, const int evel)
 	else
 	{
 		Layers[evel].BlockAtGridPos(pos).SetDisplayed(Block::Displayed::Nothing);
-	}
-}
-
-void World::CalcPrimeRecur(const Vei2 gridpos_in, const int evel)
-{
-	const int xStart = std::max(0, gridpos_in.x - 1);
-	const int yStart = std::max(0, gridpos_in.y - 1);
-	const int zStart = std::max(0, evel - 1);
-	const int xEnd = std::min(Layers[evel].GetWidth() - 1, gridpos_in.x + 1);
-	const int yEnd = std::min(Layers[evel].GetHeight() - 1, gridpos_in.y + 1);
-	const int zEnd = std::min(elevation - 1, evel + 1);
-
-	if (BlockAtGridPos({ gridpos_in.x,gridpos_in.y }, evel).GetHasCalcNeighbors() == false)
-	{
-		CheckNeighborsSetPrime(gridpos_in,evel);
-
-		for (int z = zStart; z <= zEnd; ++z)
-		{
-			for (Vei2 gridpos = { xStart,yStart }; gridpos.y <= yEnd; ++gridpos.y)
-			{
-				for (gridpos.x = xStart; gridpos.x <= xEnd; ++gridpos.x)
-				{
-					if (gridpos_in != gridpos)
-					{
-						CalcPrimeRecur(gridpos, z);
-					}
-				}
-			}
-		}
-	}
-}
-
-void World::CalcPrimeReset(const Vei2 gridpos_in, const int evel)
-{
-	const int xStart = std::max(0, gridpos_in.x - 1);
-	const int yStart = std::max(0, gridpos_in.y - 1);
-	const int zStart = std::max(0, evel - 1);
-	const int xEnd = std::min(Layers[evel].GetWidth() - 1, gridpos_in.x + 1);
-	const int yEnd = std::min(Layers[evel].GetHeight() - 1, gridpos_in.y + 1);
-	const int zEnd = std::min(elevation - 1, evel + 1);
-
-	if (BlockAtGridPos({ gridpos_in.x,gridpos_in.y }, evel).GetHasCalcNeighbors() == true)
-	{
-		BlockAtGridPos({ gridpos_in.x,gridpos_in.y }, evel).SetHasCalcNeighbors(false);
-
-		for (int z = zStart; z <= zEnd; ++z)
-		{
-			for (Vei2 gridpos = { xStart,yStart }; gridpos.y <= yEnd; ++gridpos.y)
-			{
-				for (gridpos.x = xStart; gridpos.x <= xEnd; ++gridpos.x)
-				{
-					if (gridpos_in != gridpos)
-					{
-						CalcPrimeRecur(gridpos, z);
-					}
-				}
-			}
-		}
 	}
 }
