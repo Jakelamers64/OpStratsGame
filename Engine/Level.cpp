@@ -21,6 +21,21 @@ Level::Level(Graphics & gfx, const int levelEvel_in)
 			}
 		}
 	}
+	/*test code start
+	if (levelEvel_in == 1)
+	{
+		for (int y = 1; y < height - 1; ++y)
+		{
+			for (int x = 1; x < width - 1; ++x)
+			{
+				BlockAtGridPos({ x,y }).SetContent(Block::Contents::Empty);
+				BlockAtGridPos({ x,y }).SetDisplayed(Block::Displayed::Nothing);
+			}
+		}
+		BlockAtGridPos({ 5,5 }).SetContent(Block::Contents::Stone);
+		BlockAtGridPos({ 5,5 }).SetDisplayed(Block::Displayed::all);
+	}
+	*/
 }
 
 void Level::Draw(const RectI& rectToDraw, File toDraw,const int drawHeight)
