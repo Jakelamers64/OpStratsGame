@@ -13,11 +13,26 @@ World::World(Graphics& gfx,const int elevation_in)
 	CalcPrime();
 }
 
-void World::Draw(const RectI& rectToDraw, Graphics & gfx, const File toDraw)
+void World::Draw(const RectI& rectToDraw, Graphics & gfx, File toDraw, const Vei2 playerLoc)
 {
-	//calls draw on the level you are curently on and the one above it 
-	Layers[curEvel].Draw(rectToDraw,toDraw,0);
-	Layers[curEvel + 1].Draw(rectToDraw, toDraw,1);
+	//draw the current lvl you are on and the one below
+	for (int z = curEvel - 1; z <= curEvel; ++z)
+	{
+		assert(z >= 0);
+		assert(z <= elevation);
+		//index and draw all of the blocks in the bounds of the view
+		for (Vei2 gridpos = { playerLoc.x,playerLoc.y }; gridpos.y <= playerLoc.y + rectToDraw.bottom; ++gridpos.y)
+		{
+			for (gridpos.x = playerLoc.x + rectToDraw.left; gridpos.x <= playerLoc.x + rectToDraw.right; ++gridpos.x)
+			{
+				assert(gridpos.x >= 0);
+				assert(gridpos.y >= 0);
+				assert(gridpos.x < width);
+				assert(gridpos.y < length);
+				BlockAtGridPos(gridpos, z).Draw(gfx, toDraw.GetFile(), GridToIso(gridpos), z);
+			}
+		}
+	}
 }
 
 void World::CalcPrime()
@@ -39,15 +54,18 @@ Vei2 World::BlockAtScreenPos(const Vei2 screenPos)
 	//orgin for curlvl + 1
 	Vei2 originPlus1 = { origin.x,origin.y - 32 };
 
-	Vei2 gridPos = Layers[curEvel + 1].BlockAtScreenPos(screenPos, originPlus1);
+	Vei2 gridPos = IsoToGrid(screenPos, originPlus1);
 
-	if (Layers[curEvel + 1].IsInBounds(gridPos))
+	if (Layers[curEvel].IsInBounds(gridPos))
 	{
-		if (Layers[curEvel + 1].BlockAtGridPos(gridPos).GetContent() == Block::Contents::Empty)
+		if (Layers[curEvel].BlockAtGridPos(gridPos).GetContent() == Block::Contents::Empty)
 		{
-			return Layers[curEvel].BlockAtScreenPos(screenPos, origin);
+			return IsoToGrid(screenPos, origin);
 		}
-		return gridPos;
+		else
+		{
+			return gridPos;
+		}
 	}
 	else
 	{
@@ -267,4 +285,49 @@ void World::CheckNeighborsSetPrime(const Vei2 pos, const int evel)
 	{
 		Layers[evel].BlockAtGridPos(pos).SetDisplayed(Block::Displayed::Nothing);
 	}
+}
+
+Vei2 World::GridToIso(const Vei2 gridpos)
+{
+	assert(gridpos.x >= 0);
+	assert(gridpos.y >= 0);
+	assert(gridpos.x < width);
+	assert(gridpos.y < length);
+
+	//calc iso shift from center
+	return Vei2(
+		origin.x + ((gridpos.x - gridpos.y) * brickWidth / 2),
+		origin.y + ((gridpos.x + gridpos.y) * brickHeight / 4)
+	);
+}
+
+Vei2 World::IsoToGrid(const Vei2 screenPos, const Vei2 origin)
+{
+	//adjust for origin
+	Vei2 originShift = Vei2(
+		//x start
+		((origin.x / (brickWidth / 2)) +
+		(origin.y / (brickHeight / 4))) / 2,
+		//x end
+		//y start
+			((origin.y / (brickHeight / 4)) -
+		(origin.x / (brickWidth / 2))) / 2
+		//y end
+	);
+	//url for where I got the base for this code
+	//http://clintbellanger.net/articles/isometric_math/
+	return Vei2(
+		//x start
+		(
+		(screenPos.x / (brickWidth / 2)) +
+			(screenPos.y / (brickHeight / 4))
+			) / 2 - originShift.x,
+		//x end
+		//y start
+			(
+		((screenPos.y + 8) / (brickHeight / 4)) -
+				(screenPos.x / (brickWidth / 2))
+				) / 2 - originShift.y
+		//y end
+	);
 }

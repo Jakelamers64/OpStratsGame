@@ -45,6 +45,6 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	world.Draw(view,gfx,blockComp);
+	world.Draw(view, gfx, blockComp, {0,0});
 	dev.DrawStats({ 5,5 }, wnd.mouse.GetPos(), dt, gfx,world);
 }
