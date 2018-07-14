@@ -1,6 +1,6 @@
 #pragma once
 #include "Vec2.h"
-#include "Vei2.h"
+#include "Vec2.h"
 #include "World.h"
 #include "Graphics.h"
 

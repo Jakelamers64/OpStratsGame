@@ -21,7 +21,8 @@ Level::Level(Graphics & gfx, const int levelEvel_in)
 			}
 		}
 	}
-	/*test code start
+	/* 
+	test code that allows you to view layer below
 	if (levelEvel_in == 1)
 	{
 		for (int y = 1; y < height - 1; ++y)
@@ -96,8 +97,8 @@ Vei2 Level::GridToIso(const Vei2 gridpos, const Vei2 origin)
 
 	//calc iso shift from center
 	return Vei2(
-		gfx.GetCenter().x + ((gridpos.x - gridpos.y) * BlockAtGridPos(gridpos).GetWidth() / 2),
-		gfx.GetCenter().y + ((gridpos.x + gridpos.y) * BlockAtGridPos(gridpos).GetWidth() / 4)
+		origin.x + ((gridpos.x - gridpos.y) * BlockAtGridPos(gridpos).GetWidth() / 2),
+		origin.y + ((gridpos.x + gridpos.y) * BlockAtGridPos(gridpos).GetWidth() / 4)
 	);
 }
 

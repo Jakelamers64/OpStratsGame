@@ -1,4 +1,5 @@
 #include "Block.h"
+#include "SpriteEffect.h"
 #include <assert.h>
 
 Block::Block(const Contents contents_in, const Displayed display_in, Vei2 gridPos)
@@ -19,7 +20,7 @@ void Block::Draw(Graphics& gfx, Surface& surface, const Vei2& loc_in, const int 
 	{
 		if (Block::Contents::Stone == content)
 		{
-			gfx.DrawSprite(loc.x, loc.y - 32 * drawHeight, GetPrimeRect(display, content), gfx.GetScreenRect(), surface, chroma);
+			gfx.DrawSprite(loc.x, loc.y - 32 * drawHeight, GetPrimeRect(display, content), gfx.GetScreenRect(), surface, SpriteEffect::Chroma{ chroma });
 		}
 	}
 }

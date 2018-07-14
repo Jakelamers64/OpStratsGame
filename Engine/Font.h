@@ -1,13 +1,13 @@
 #pragma once
 #include "Graphics.h"
 #include "Surface.h"
-#include "Vei2.h"
+#include "Vec2.h"
 
 class Font
 {
 public:
 	Font(const std::string& filename, Color chroma = Colors::White);
-	void DrawText(const std::string& text, const Vei2 pos, Graphics& gfx) const;
+	void DrawText(const std::string & text, const Vei2 pos, Graphics & gfx, Color color = Colors::White) const;
 	int GetGlyphHeight() const;
 private:
 	RectI MapGlyphRect(char c) const;

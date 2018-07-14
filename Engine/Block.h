@@ -1,8 +1,8 @@
 #pragma once
-#include "RectI.h"
+#include "Rect.h"
 #include "Graphics.h"
 #include "Surface.h"
-#include "Vei2.h"
+#include "Vec2.h"
 
 class Block
 {
