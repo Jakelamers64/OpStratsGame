@@ -14,7 +14,7 @@ void Player::OnHover(World & world, const Vei2 & screenPos, Graphics& gfx) const
 		//get the loc to draw to screen
 		Vei2 pos = world.GridToIso({ gridpos.x,gridpos.y }, { world.GetOrigin().x,world.GetOrigin().y - world.GetBrickHeight() / 2 });
 		//draw sprite to show which block will be selected
-		gfx.DrawSprite(pos.x - 64 / 2, pos.y - 64 / 4, RectI(64*6,64*7,0,64), gfx.GetScreenRect(), cursor, SpriteEffect::Ghost(Colors::Magenta));
+		gfx.DrawSprite(pos.x - world.GetBrickWidth() / 2, pos.y - world.GetBrickHeight() / 4, RectI(64*6,64*7,0,64), gfx.GetScreenRect(), cursor, SpriteEffect::Ghost(Colors::Magenta));
 	}
 }
 

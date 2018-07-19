@@ -13,4 +13,5 @@ public:
 private:
 	int curEvel = 1;
 	Surface cursor = Surface("cursorComp.bmp");
+	Vei2 selected; 
 };
