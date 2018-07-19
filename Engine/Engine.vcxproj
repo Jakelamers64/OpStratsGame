@@ -254,6 +254,7 @@
   <ItemGroup>
     <Image Include="blockComp.bmp" />
     <Image Include="Chili.ico" />
+    <Image Include="cursorComp.bmp" />
     <Image Include="Fixedsys16x28.bmp" />
     <Image Include="Gandalf.bmp" />
     <Image Include="link90x90.bmp" />

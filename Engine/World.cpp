@@ -29,7 +29,7 @@ void World::Draw(const RectI& rectToDraw, Graphics & gfx, File toDraw, const Vei
 				assert(gridpos.y >= 0);
 				assert(gridpos.x < width);
 				assert(gridpos.y < length);
-				BlockAtGridPos(gridpos, z).Draw(gfx, toDraw.GetFile(), GridToIso(gridpos), z);
+				BlockAtGridPos(gridpos, z).Draw(gfx, toDraw.GetFile(), GridToIso(gridpos,origin), z);
 			}
 		}
 	}
@@ -46,30 +46,6 @@ void World::CalcPrime()
 				CheckNeighborsSetPrime({ x,y }, z);
 			}
 		}
-	}
-}
-
-Vei2 World::BlockAtScreenPos(const Vei2 screenPos)
-{
-	//orgin for curlvl + 1
-	Vei2 originPlus1 = { origin.x,origin.y - 32 };
-
-	Vei2 gridPos = IsoToGrid(screenPos, originPlus1);
-
-	if (Layers[curEvel].IsInBounds(gridPos))
-	{
-		if (Layers[curEvel].BlockAtGridPos(gridPos).GetContent() == Block::Contents::Empty)
-		{
-			return IsoToGrid(screenPos, origin);
-		}
-		else
-		{
-			return gridPos;
-		}
-	}
-	else
-	{
-		return { -69,-69 };
 	}
 }
 
@@ -287,7 +263,7 @@ void World::CheckNeighborsSetPrime(const Vei2 pos, const int evel)
 	}
 }
 
-Vei2 World::GridToIso(const Vei2 gridpos)
+Vei2 World::GridToIso(const Vei2 gridpos, const Vei2 origin) const
 {
 	assert(gridpos.x >= 0);
 	assert(gridpos.y >= 0);
@@ -301,7 +277,7 @@ Vei2 World::GridToIso(const Vei2 gridpos)
 	);
 }
 
-Vei2 World::IsoToGrid(const Vei2 screenPos, const Vei2 origin)
+Vei2 World::IsoToGrid(const Vei2 screenPos, const Vei2 origin) const
 {
 	//adjust for origin
 	Vei2 originShift = Vei2(
@@ -330,4 +306,29 @@ Vei2 World::IsoToGrid(const Vei2 screenPos, const Vei2 origin)
 				) / 2 - originShift.y
 		//y end
 	);
+}
+
+Vei2 World::GetOrigin() const
+{
+	return origin;
+}
+
+int World::GetWidth() const
+{
+	return width;
+}
+
+int World::GetLength() const
+{
+	return length;
+}
+
+int World::GetBrickWidth() const
+{
+	return brickWidth;
+}
+
+int World::GetBrickHeight() const
+{
+	return brickHeight;
 }

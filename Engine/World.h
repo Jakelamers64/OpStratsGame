@@ -10,14 +10,19 @@ public:
 	void Draw(const RectI& rectToDraw, Graphics & gfx, const File toDraw, const Vei2 playerLoc);
 	void CalcPrime();
 	Block& BlockAtGridPos(const Vei2 pos, const int evel);
-	Vei2 BlockAtScreenPos(const Vei2 screenPos);
+	Vei2 GridToIso(const Vei2 gridpos, const Vei2 origin) const;
+	Vei2 IsoToGrid(const Vei2 screenPos, const Vei2 origin) const;
+	Vei2 GetOrigin() const;
+	int GetWidth() const;
+	int GetLength() const;
+	int GetBrickWidth() const;
+	int GetBrickHeight() const;
 private:
 	void CheckNeighborsSetPrime(const Vei2 pos, const int evel);
-	Vei2 GridToIso(const Vei2 gridpos);
-	Vei2 IsoToGrid(const Vei2 screenPos, const Vei2 origin);
 private:
 	//z height in the 3d 
 	int elevation;
+	//level you can currently effect
 	int curEvel = 1;
 	//ogres are like my game they have layers
 	std::vector<Level> Layers;

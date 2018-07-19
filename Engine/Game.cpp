@@ -47,4 +47,5 @@ void Game::ComposeFrame()
 {
 	world.Draw(view, gfx, blockComp, {0,0});
 	dev.DrawStats({ 5,5 }, wnd.mouse.GetPos(), dt, gfx,world);
+	player.OnHover(world, wnd.mouse.GetPos(), gfx);
 }

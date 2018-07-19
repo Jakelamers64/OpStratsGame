@@ -54,6 +54,7 @@ private:
 	World world;
 	File blockComp;
 	Dev dev;
+	Player player;
 
 	//gives frametime so you can pass it to dev
 	float dt;
