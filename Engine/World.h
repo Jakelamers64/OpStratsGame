@@ -17,6 +17,7 @@ public:
 	int GetLength() const;
 	int GetBrickWidth() const;
 	int GetBrickHeight() const;
+	int GetElevation() const;
 private:
 	void CheckNeighborsSetPrime(const Vei2 pos, const int evel);
 private:
@@ -34,4 +35,5 @@ private:
 	//dim of layers
 	int width = 10;
 	int length = 10;
+	Surface highlight = Surface("highLightComp.bmp");
 };

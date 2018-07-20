@@ -29,7 +29,7 @@ void World::Draw(const RectI& rectToDraw, Graphics & gfx, File toDraw, const Vei
 				assert(gridpos.y >= 0);
 				assert(gridpos.x < width);
 				assert(gridpos.y < length);
-				BlockAtGridPos(gridpos, z).Draw(gfx, toDraw.GetFile(), GridToIso(gridpos,origin), z);
+				BlockAtGridPos(gridpos, z).Draw(gfx, toDraw.GetFile(),highlight, GridToIso(gridpos,origin), z);
 			}
 		}
 	}
@@ -51,6 +51,9 @@ void World::CalcPrime()
 
 Block& World::BlockAtGridPos(const Vei2 pos, int evel)
 {
+	assert(evel >= 0);
+	assert(evel < elevation);
+
 	return Layers[evel].BlockAtGridPos(pos);
 }
 
@@ -331,4 +334,9 @@ int World::GetBrickWidth() const
 int World::GetBrickHeight() const
 {
 	return brickHeight;
+}
+
+int World::GetElevation() const
+{
+	return elevation;
 }

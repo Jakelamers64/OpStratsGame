@@ -27,16 +27,18 @@ public:
 	};
 
 	Block(const Contents contents_in,const Displayed display_in,Vei2 gridPos);
-	void Draw(Graphics& gfx,Surface& surface, const Vei2& loc,const int drawHeight);
+	void Draw(Graphics& gfx, Surface& surface, Surface& highlight, const Vei2& loc, const int drawHeight);
 	int GetWidth() const;
 	int GetHeight() const;
 	Contents GetContent() const;
 	Displayed GetDisplay() const;
 	bool GetHasCalcNeighbors() const;
 	Vei2 GetPos() const;
+	bool GetSelected() const;
 	void SetContent(Contents val);
 	void SetDisplayed(Displayed val);
 	void SetHasCalcNeighbors(const bool val);
+	void SetSelected(const bool selected_in);
 	RectI GetPrimeRect(const Displayed display, const Contents content) const;
 private:
 	bool hasCalcNeighbors = false;
@@ -44,4 +46,5 @@ private:
 	Contents content;
 	Displayed display;
 	Vei2 pos;
+	bool selected = false;
 };

@@ -41,11 +41,13 @@ void Game::Go()
 void Game::UpdateModel()
 {
 	dt = ft.Mark();
+	player.OnClick(wnd.mouse.GetPos(), world, wnd);
 }
 
 void Game::ComposeFrame()
 {
 	world.Draw(view, gfx, blockComp, {0,0});
-	dev.DrawStats({ 5,5 }, wnd.mouse.GetPos(), dt, gfx,world);
 	player.OnHover(world, wnd.mouse.GetPos(), gfx);
+	//dev stats are call from this function
+	dev.DrawStats({ 5,5 }, wnd.mouse.GetPos(), dt, gfx, world);
 }

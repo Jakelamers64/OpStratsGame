@@ -10,7 +10,7 @@ Block::Block(const Contents contents_in, const Displayed display_in, Vei2 gridPo
 {
 }
 
-void Block::Draw(Graphics& gfx, Surface& surface, const Vei2& loc_in, const int drawHeight)
+void Block::Draw(Graphics& gfx, Surface& surface, Surface& highlight, const Vei2& loc_in, const int drawHeight)
 {
 	//shift sprite so the middle is the seed loc for drawing instead of top left corner
 	Vei2 loc = { loc_in.x - GetWidth() / 2,loc_in.y - GetHeight() / 4 };
@@ -21,6 +21,18 @@ void Block::Draw(Graphics& gfx, Surface& surface, const Vei2& loc_in, const int 
 		if (Block::Contents::Stone == content)
 		{
 			gfx.DrawSprite(loc.x, loc.y - 32 * drawHeight, GetPrimeRect(display, content), gfx.GetScreenRect(), surface, SpriteEffect::Chroma{ chroma });
+		}
+	}
+	//draw border if selected
+	if (selected)
+	{
+		if (Block::Contents::Empty != content && Block::Displayed::Nothing != display)
+		{
+			gfx.DrawSprite(loc.x, loc.y - 32 * drawHeight, GetPrimeRect(display, content), gfx.GetScreenRect(), highlight, SpriteEffect::Chroma{ chroma });
+		}
+		else
+		{
+			gfx.DrawSprite(loc.x, loc.y - 32 * drawHeight, RectI(6 * 64,7 * 64,0,64), gfx.GetScreenRect(), highlight, SpriteEffect::Chroma{ chroma });
 		}
 	}
 }
@@ -55,6 +67,11 @@ Vei2 Block::GetPos() const
 	return pos;
 }
 
+bool Block::GetSelected() const
+{
+	return selected;
+}
+
 void Block::SetContent(Contents val)
 {
 	content = val;
@@ -70,6 +87,11 @@ void Block::SetDisplayed(Displayed val)
 void Block::SetHasCalcNeighbors(const bool val)
 {
 	hasCalcNeighbors = val;
+}
+
+void Block::SetSelected(const bool selected_in)
+{
+	selected = selected_in;
 }
 
 RectI Block::GetPrimeRect(const Displayed display,const Contents content) const
